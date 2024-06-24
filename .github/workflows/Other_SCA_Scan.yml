@@ -1,7 +1,7 @@
-name: Run Another SCA
+name: Other SCA Scan
 
 on:
-  workflow_dispatch:
+  workflow_dispatch
 
 jobs:
   release:

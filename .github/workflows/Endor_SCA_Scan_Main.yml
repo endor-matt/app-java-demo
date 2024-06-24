@@ -1,0 +1,36 @@
+name: Endor Labs - SCA Scan on Main Branch
+on:
+  workflow_dispatch
+    
+jobs:
+  scan-repo:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+
+        - name: Checkout Repository
+          uses: actions/checkout@v3
+          
+        - name: Setup Java
+          uses: actions/setup-java@v4
+          with:
+            distribution: microsoft
+            java-version: "17"
+            cache: maven
+            cache-dependency-path: pom.xml
+
+        - name: Compile Package
+          run: mvn clean install
+            
+        - name: Endor Labs SCA Scan
+          uses: endorlabs/github-action@main
+          with:
+            namespace: "matt-demo-2"
+            api: "https://api.endorlabs.com"
+            scan_summary_output_type: "table"
+            pr: false
+            enable_github_action_token: true
+            additional_args: "--as-default-branch --secrets --tools --github --ghactions"
+            tags: "actor = ${{ github.actor }},run-id = ${{ github.run_id }},event name = ${{ github.event_name }},workflow = ${{ github.workflow }},github sha = ${{ github.sha }}"
