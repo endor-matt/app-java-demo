@@ -28,7 +28,7 @@ jobs:
         - name: Endor Labs Workflow Dispatch
           uses: endorlabs/github-action@main
           with:
-            namespace: "matt-demo-2"
+            namespace: "matt-demo"
             api: "https://api.endorlabs.com"
             scan_summary_output_type: "table"
             pr: true
