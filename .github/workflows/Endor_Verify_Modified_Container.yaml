@@ -42,14 +42,14 @@ jobs:
       - name: Endor Labs Dependency Scan
         uses: endorlabs/github-action@v1.1.2
         with:
-          namespace: "matt-demo-2"
+          namespace: "matt-demo"
           scan_summary_output_type: "table"
           enable_github_action_token: true
           scan_dependencies: true
           scan_secrets: true
           scan_git_logs: true
           additional_args: "--secrets --tools --github --ghactions"
-          tags: "actor = ${{ github.actor }},workspace = ${{ github.workspace }},run-id = ${{ github.run_id }},event name = ${{ github.event_name }},workflow = ${{ github.workflow }},github sha = ${{ github.sha }}"
+          tags: "actor = ${{ github.actor }},workspace = ${{ github.workspace }},run-id = ${{ github.run_id }},event name = ${{ github.event_name }},workflow = ${{ github.workflow }}"
 
       - name: Run SAST
         run: python3 -m pip install semgrep && semgrep scan
@@ -73,7 +73,7 @@ jobs:
       - name: Container verify
         uses: endorlabs/github-action/verify@main
         with:
-          namespace: "matt-demo-2"
+          namespace: "matt-demo"
           artifact_name: ${{ env.VERIFY_ARTIFACT }}
           certificate_oidc_issuer: "https://token.actions.githubusercontent.com"
 
