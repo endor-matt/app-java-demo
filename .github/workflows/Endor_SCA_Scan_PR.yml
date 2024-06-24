@@ -8,6 +8,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       id-token: write
+      issues: write
+      pull-requests: write
       contents: read
     steps:
 
@@ -31,6 +33,6 @@ jobs:
             namespace: "matt-demo"
             api: "https://api.endorlabs.com"
             scan_summary_output_type: "table"
-            pr: true
+            enable_pr_comments: true
             enable_github_action_token: true
             tags: "actor = ${{ github.actor }},run-id = ${{ github.run_id }},event name = ${{ github.event_name }},workflow = ${{ github.workflow }}"
