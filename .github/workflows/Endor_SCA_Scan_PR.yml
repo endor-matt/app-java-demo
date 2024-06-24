@@ -1,7 +1,7 @@
 name: Endor Labs - SCA Scan on PR
 on:
-  workflow_dispatch
-  #pull_request <-- Uncomment out to run on PRs
+  workflow_dispatch:
+  pull_request: # <-- uncomment/comment out to enable/disable pr scans 
     
 jobs:
   scan-repo:
