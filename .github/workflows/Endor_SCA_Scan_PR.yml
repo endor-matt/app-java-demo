@@ -37,4 +37,4 @@ jobs:
             scan_secrets: true
             scan_git_logs: true
             additional_args: "--pr-baseline=main --pr-incremental --secrets --tools --github --ghactions"
-            tags: "actor = ${{ github.actor }},run-id = ${{ github.run_id }}workspace = ${{ github.workspace }},run-id = ${{ github.run_id }},event name = ${{ github.event_name }},workflow = ${{ github.workflow }},github sha = ${{ github.sha }}"
+            tags: "actor = ${{ github.actor }},run-id = ${{ github.run_id }}workspace = ${{ github.workspace }},run-id = ${{ github.run_id }},event name = ${{ github.event_name }},workflow = ${{ github.workflow }}"
