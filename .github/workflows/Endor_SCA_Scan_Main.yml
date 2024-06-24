@@ -27,10 +27,10 @@ jobs:
         - name: Endor Labs SCA Scan
           uses: endorlabs/github-action@main
           with:
-            namespace: "matt-demo-2"
+            namespace: "matt-demo"
             api: "https://api.endorlabs.com"
             scan_summary_output_type: "table"
             pr: false
             enable_github_action_token: true
             additional_args: "--as-default-branch --secrets --tools --github --ghactions"
-            tags: "actor = ${{ github.actor }},run-id = ${{ github.run_id }},event name = ${{ github.event_name }},workflow = ${{ github.workflow }},github sha = ${{ github.sha }}"
+            tags: "actor = ${{ github.actor }},run-id = ${{ github.run_id }},event name = ${{ github.event_name }},workflow = ${{ github.workflow }}"
