@@ -1,0 +1,20 @@
+name: Run Another SCA
+
+on:
+  workflow_dispatch:
+
+jobs:
+  release:
+    name: Run Another SCA
+    runs-on: ubuntu-latest
+    permissions: read-all
+    steps:
+  
+      - name: Checkout code
+        uses: actions/checkout@v3
+        
+      - name: Run another SCA
+        run: |
+          curl --compressed https://static.snyk.io/cli/latest/snyk-linux -o snyk
+          chmod +x ./snyk
+          ./snyk test --all-projects

@@ -1,0 +1,79 @@
+name: Release Workflow Modified
+
+on:
+  workflow_dispatch:
+
+jobs:
+  release:
+    name: Build and Sign
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+    
+      - name: Checkout code
+        uses: actions/checkout@v3
+        
+      - name: Build JAR
+        run: mvn clean install -Dskiptests=true
+
+      - name: Create container
+        run: docker build -t jscott932/app-java-demo:latest .
+          
+      - name: Get Image Digest to Sign
+        run: |
+         IMAGE_SHA=$(docker inspect jscott932/app-java-demo:latest | jq -r '.[].Id')
+         IMAGE_NAME=jscott932/app-java-demo
+         SIGNING_TARGET="$IMAGE_NAME"@"$IMAGE_SHA"
+         echo ARTIFACT="$SIGNING_TARGET" >> $GITHUB_ENV
+
+      - name: Container Sign
+        uses: endorlabs/github-action/sign@aa5139fcbfa6faa120afc511f0678f81485e83bc
+        with:
+          namespace: "yolo"
+          artifact_name: ${{ env.ARTIFACT }}
+
+      - name: Run Tests
+        run: |
+          mvn test
+          
+      - name: Endor Labs Dependency Scan
+        uses: endorlabs/github-action@v1.1.2
+        with:
+          namespace: "yolo"
+          scan_summary_output_type: "table"
+          pr: "false"
+          enable_github_action_token: "true"
+          scan_dependencies: "true"
+          scan_secrets: "true"
+          scan_git_logs: "true"
+
+      - name: Run SAST
+        run: python3 -m pip install semgrep && semgrep scan
+
+      - name: Modify Container Image
+        run: docker run --name temp_container jscott932/app-java-demo:latest touch helloworld.txt && docker commit temp_container jscott932/app-java-demo:latest
+      
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Get Image Digest to Verify
+        run: |
+         VERIFY_SHA=$(docker inspect jscott932/app-java-demo:latest | jq -r '.[].Id')
+         VERIFY_IMAGE_NAME=jscott932/app-java-demo
+         VERIFY_TARGET="$VERIFY_IMAGE_NAME"@"$VERIFY_SHA"
+         echo VERIFY_ARTIFACT="$VERIFY_TARGET" >> $GITHUB_ENV
+         
+      - name: Container verify
+        uses: endorlabs/github-action/verify@aa5139fcbfa6faa120afc511f0678f81485e83bc
+        with:
+          namespace: "yolo"
+          artifact_name: ${{ env.VERIFY_ARTIFACT }}
+          certificate_oidc_issuer: "https://token.actions.githubusercontent.com"
+
+      - name: Push to Docker Hub
+        run: docker push jscott932/app-java-demo:latest
