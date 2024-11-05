@@ -32,7 +32,7 @@ jobs:
       - name: Container Sign
         uses: endorlabs/github-action/sign@main
         with:
-          namespace: "matt-demo-2"
+          namespace: "matt-demo"
           artifact_name: ${{ env.ARTIFACT }}
 
       - name: Run Tests
@@ -44,7 +44,7 @@ jobs:
         with:
           namespace: "matt-demo"
           scan_summary_output_type: "table"
-          pr: "false"
+          pr: "true"
           enable_github_action_token: "true"
           scan_dependencies: "true"
           scan_secrets: "true"
@@ -70,7 +70,7 @@ jobs:
       - name: Container verify
         uses: endorlabs/github-action/verify@main
         with:
-          namespace: "matt-demo-2"
+          namespace: "matt-demo"
           artifact_name: ${{ env.VERIFY_ARTIFACT }}
           certificate_oidc_issuer: "https://token.actions.githubusercontent.com"
       
@@ -92,15 +92,15 @@ jobs:
         with:
           namespace: "matt-demo"
           scan_summary_output_type: "table"
-          pr: true
-          enable_github_action_token: true
-          scan_container: true
-          scan_dependencies: false
+          pr: "true"
+          enable_github_action_token: "true"
+          scan_container: "true"
+          scan_dependencies: "false"
           github_token: ${{ secrets.GH_TOKEN }} 
-          enable_pr_comments: true
+          enable_pr_comments: "true"
           image: endormatt/app-java-demo:latest
           project_name: container-matt-app-java-demo
-          tags: "Artifact Signature = ${{ env.ARTIFACT_SIGNATURE }}"
+          #tags: "Artifact Signature = ${{ env.ARTIFACT_SIGNATURE }}"
             
 
           
