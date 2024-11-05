@@ -88,7 +88,7 @@ jobs:
         run: docker push endormatt/app-java-demo:latest
 
       - name: Endor Labs Container Scan
-        uses: endorlabs/github-action@containers
+        uses: endorlabs/github-action@main
         with:
           namespace: "matt-demo"
           scan_summary_output_type: "table"
