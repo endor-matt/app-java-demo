@@ -89,13 +89,17 @@ jobs:
       - name: Endor Labs Container Scan
         uses: endorlabs/github-action@containers
         with:
-          namespace: "matt-demo-2"
+          namespace: "matt-demo"
           scan_summary_output_type: "table"
-          pr: false
+          pr: true
           enable_github_action_token: true
           scan_container: true
           scan_dependencies: false
+          github_token: ${{ secrets.GH_TOKEN }} 
+          enable_pr_comments: true
           image: endormatt/app-java-demo:latest
           project_name: container-matt-app-java-demo
           tags: "Artifact Signature = ${{ env.ARTIFACT_SIGNATURE }}"
+            
+
           
