@@ -42,7 +42,7 @@ jobs:
       - name: Endor Labs Scan
         uses: endorlabs/github-action@main
         with:
-          namespace: "matt-demo-2"
+          namespace: "matt-demo"
           scan_summary_output_type: "table"
           pr: "false"
           enable_github_action_token: "true"
