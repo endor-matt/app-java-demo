@@ -35,5 +35,4 @@ jobs:
             scan_summary_output_type: "table"
             enable_pr_comments: true
             enable_github_action_token: true
-            github_token: ${{ secrets.GH_TOKEN }} 
-            tags: "actor = ${{ github.actor }},run-id = ${{ github.run_id }},event name = ${{ github.event_name }},workflow = ${{ github.workflow }}"
+            github_token: ${{ secrets.GH_TOKEN }}
