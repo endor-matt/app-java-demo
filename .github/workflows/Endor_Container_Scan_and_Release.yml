@@ -101,6 +101,4 @@ jobs:
           image: endormatt/app-java-demo:latest
           project_name: container-matt-app-java-demo
           tags: "Artifact Signature = ${{ env.ARTIFACT_SIGNATURE }}"
-            
-
           
