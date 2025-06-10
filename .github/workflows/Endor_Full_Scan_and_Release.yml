@@ -54,7 +54,8 @@ jobs:
           scan_git_logs: "true"
           scan_tools: "true"
           scan_sast: "true"
-          tags: "Artifact-Signature-${{ env.ARTIFACT_SIGNATURE }}"
+          tags: "Production_Release"
+          additional_args: "--finding-tags=Artifact_Signature_${{ env.ARTIFACT_SIGNATURE }}"
               
       - name: Login to Docker Hub
         uses: docker/login-action@v3
@@ -100,5 +101,6 @@ jobs:
           scan_dependencies: "false"
           github_token: ${{ secrets.GH_TOKEN }} 
           image: endormatt/app-java-demo:latest
-          tags: "Artifact-Signature-${{ env.ARTIFACT_SIGNATURE }}"
+          tags: "Production_Release"
+          additional_args: "--finding-tags=Artifact_Signature_${{ env.ARTIFACT_SIGNATURE }}"
           
