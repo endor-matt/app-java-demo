@@ -32,7 +32,7 @@ jobs:
       - name: Container Sign
         uses: endorlabs/github-action/sign@aa5139fcbfa6faa120afc511f0678f81485e83bc
         with:
-          namespace: "matt-demo-2"
+          namespace: "matt-demo-2.code-2-cloud"
           artifact_name: ${{ env.ARTIFACT }}
 
       - name: Run Tests
@@ -40,9 +40,9 @@ jobs:
           mvn test
           
       - name: Endor Labs Dependency Scan
-        uses: endorlabs/github-action@v1.1.2
+        uses: endorlabs/github-action@main
         with:
-          namespace: "matt-demo"
+          namespace: "matt-demo.code-2-cloud"
           scan_summary_output_type: "table"
           enable_github_action_token: true
           scan_dependencies: true
@@ -50,9 +50,6 @@ jobs:
           scan_git_logs: true
           additional_args: "--secrets --tools --github --ghactions"
           tags: "actor = ${{ github.actor }},workspace = ${{ github.workspace }},run-id = ${{ github.run_id }},event name = ${{ github.event_name }},workflow = ${{ github.workflow }}"
-
-      - name: Run SAST
-        run: python3 -m pip install semgrep && semgrep scan
 
       - name: Modify Container Image
         run: docker run --name temp_container endormatt/app-java-demo:latest touch helloworld.txt && docker commit temp_container endormatt/app-java-demo:latest
@@ -73,7 +70,7 @@ jobs:
       - name: Container verify
         uses: endorlabs/github-action/verify@main
         with:
-          namespace: "matt-demo"
+          namespace: "matt-demo.code-2-cloud"
           artifact_name: ${{ env.VERIFY_ARTIFACT }}
           certificate_oidc_issuer: "https://token.actions.githubusercontent.com"
 
