@@ -38,6 +38,9 @@ jobs:
       - name: Run Tests
         run: |
           mvn test
+
+      - name: Configure SAST
+        run: python3 -m pip install semgrep
           
       - name: Endor Labs Scan
         uses: endorlabs/github-action@main
