@@ -98,7 +98,7 @@ jobs:
           pr: "false"
           enable_github_action_token: "true"
           scan_container: "true"
-          scan_dependencies: "true"
+          scan_dependencies: "false"
           github_token: ${{ secrets.GH_TOKEN }} 
           image: endormatt/app-java-demo:latest
           tags: "Production_Release"
