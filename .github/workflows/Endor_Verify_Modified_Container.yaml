@@ -2,7 +2,7 @@ name: Endor Labs - Verify Modified Container
 
 on:
   workflow_dispatch:
-  #pull_request <-- Uncomment out to run on PRs
+  pull_request: #<-- Uncomment out to run on PRs
 
 jobs:
   release:
@@ -30,26 +30,27 @@ jobs:
          echo ARTIFACT="$SIGNING_TARGET" >> $GITHUB_ENV
 
       - name: Container Sign
-        uses: endorlabs/github-action/sign@aa5139fcbfa6faa120afc511f0678f81485e83bc
+        uses: endorlabs/github-action/sign@main
         with:
-          namespace: "matt-demo-2.code-2-cloud"
+          namespace: "matt-demo.code-2-cloud"
           artifact_name: ${{ env.ARTIFACT }}
 
       - name: Run Tests
         run: |
           mvn test
           
-      - name: Endor Labs Dependency Scan
+      - name: Endor Labs Scan
         uses: endorlabs/github-action@main
         with:
           namespace: "matt-demo.code-2-cloud"
           scan_summary_output_type: "table"
-          enable_github_action_token: true
-          scan_dependencies: true
-          scan_secrets: true
-          scan_git_logs: true
-          additional_args: "--secrets --tools --github --ghactions"
-          tags: "actor = ${{ github.actor }},workspace = ${{ github.workspace }},run-id = ${{ github.run_id }},event name = ${{ github.event_name }},workflow = ${{ github.workflow }}"
+          pr: "true"
+          enable_github_action_token: "true"
+          scan_dependencies: "true"
+          scan_secrets: "true"
+          scan_git_logs: "true"
+          scan_tools: "true"
+          scan_sast: "true"
 
       - name: Modify Container Image
         run: docker run --name temp_container endormatt/app-java-demo:latest touch helloworld.txt && docker commit temp_container endormatt/app-java-demo:latest
