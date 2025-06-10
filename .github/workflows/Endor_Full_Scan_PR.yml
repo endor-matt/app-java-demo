@@ -1,4 +1,4 @@
-name: Endor Labs - Container Scan and Release
+name: Endor Labs - Full Container Scan PR
 
 on:
   workflow_dispatch:
