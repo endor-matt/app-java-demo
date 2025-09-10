@@ -1,7 +1,8 @@
-name: Endor Labs - Container Scan and Release
+name: Endor Labs - Full Container Scan and Release
 
 on:
-  workflow_dispatch
+  workflow_dispatch:
+  pull_request: # <-- uncomment/comment out to enable/disable pr scans
   
 jobs:
   release:
@@ -31,17 +32,20 @@ jobs:
       - name: Container Sign
         uses: endorlabs/github-action/sign@main
         with:
-          namespace: "matt-demo-2"
+          namespace: "matt-demo.code-2-cloud"
           artifact_name: ${{ env.ARTIFACT }}
 
       - name: Run Tests
         run: |
           mvn test
+
+      - name: Configure SAST
+        run: python3 -m pip install semgrep
           
       - name: Endor Labs Scan
         uses: endorlabs/github-action@main
         with:
-          namespace: "matt-demo-2"
+          namespace: "matt-demo.code-2-cloud"
           scan_summary_output_type: "table"
           pr: "false"
           enable_github_action_token: "true"
@@ -49,10 +53,10 @@ jobs:
           scan_secrets: "true"
           scan_git_logs: "true"
           scan_tools: "true"
-
-      - name: Run SAST
-        run: python3 -m pip install semgrep && semgrep scan
-      
+          scan_sast: "true"
+          tags: "Production_Release"
+          additional_args: "--finding-tags=Artifact_Signature_${{ env.ARTIFACT_SIGNATURE }}"
+              
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
@@ -69,7 +73,7 @@ jobs:
       - name: Container verify
         uses: endorlabs/github-action/verify@main
         with:
-          namespace: "matt-demo-2"
+          namespace: "matt-demo.code-2-cloud"
           artifact_name: ${{ env.VERIFY_ARTIFACT }}
           certificate_oidc_issuer: "https://token.actions.githubusercontent.com"
       
@@ -87,15 +91,16 @@ jobs:
         run: docker push endormatt/app-java-demo:latest
 
       - name: Endor Labs Container Scan
-        uses: endorlabs/github-action@containers
+        uses: endorlabs/github-action@main
         with:
-          namespace: "matt-demo-2"
+          namespace: "matt-demo.code-2-cloud"
           scan_summary_output_type: "table"
-          pr: false
-          enable_github_action_token: true
-          scan_container: true
-          scan_dependencies: false
+          pr: "false"
+          enable_github_action_token: "true"
+          scan_container: "true"
+          scan_dependencies: "false"
+          github_token: ${{ secrets.GH_TOKEN }} 
           image: endormatt/app-java-demo:latest
-          project_name: container-matt-app-java-demo
-          tags: "Artifact Signature = ${{ env.ARTIFACT_SIGNATURE }}"
+          tags: "Production_Release"
+          additional_args: "--finding-tags=Artifact_Signature_${{ env.ARTIFACT_SIGNATURE }}"
           

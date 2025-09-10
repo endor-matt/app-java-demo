@@ -32,5 +32,4 @@ jobs:
             scan_summary_output_type: "table"
             pr: false
             enable_github_action_token: true
-            additional_args: "--as-default-branch --secrets --tools --github --ghactions"
-            tags: "actor = ${{ github.actor }},run-id = ${{ github.run_id }},event name = ${{ github.event_name }},workflow = ${{ github.workflow }}"
+            additional_args: "--as-default-branch"
