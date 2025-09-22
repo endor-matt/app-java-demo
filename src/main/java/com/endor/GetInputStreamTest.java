@@ -19,7 +19,7 @@ public class GetInputStreamTest extends HttpServlet {
         doGet(request, response);
     }
 
-    private static final String POST_URL_GET_PARAMETER = "http://localhost:8080/endor-webapp/GetInputStreamInnerTest";
+    private static final String POST_URL_GET_PARAMETER = "https://localhost:8080/endor-webapp/GetInputStreamInnerTest";
 
 	@Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

@@ -318,12 +318,21 @@ public class AsyncServlet extends HttpServlet {
         Connection conn = null;
         boolean retval = false;
         try {
-            // Create database connection
+            // Create database connection using environment variables for security
             System.out.println("Oracle JDBC Driver Loaded");
             System.out.println("Oracle Connecting..");
-            String nameForConnect = "sys as sysdba";
-            String pass1 = "Psmo0601";
-            String url = "jdbc:oracle:thin:@10.0.22.108:1521:XE";
+            
+            // Load credentials from environment variables for security
+            String nameForConnect = System.getenv("DB_USERNAME");
+            String pass1 = System.getenv("DB_PASSWORD");
+            String url = System.getenv("DB_URL");
+            
+            // Validate that required environment variables are set
+            if (nameForConnect == null || pass1 == null || url == null) {
+                throw new IllegalStateException("Database credentials not properly configured. " +
+                    "Please set DB_USERNAME, DB_PASSWORD, and DB_URL environment variables.");
+            }
+            
             conn = DriverManager.getConnection(url, nameForConnect, pass1);
             System.out.println("Oracle Connected");
         } catch (Exception e) {
@@ -338,9 +347,17 @@ public class AsyncServlet extends HttpServlet {
         StringBuffer sbuf = new StringBuffer();
 
         Connection conn = null;
-        String db = "jdbc:hsqldb:hsql://localhost/xdb";
-        String user = "SA";
-        String password = "";
+        
+        // Load database credentials from environment variables for security
+        String db = System.getenv("HSQLDB_URL");
+        String user = System.getenv("HSQLDB_USERNAME");
+        String password = System.getenv("HSQLDB_PASSWORD");
+        
+        // Fallback to default values if environment variables are not set
+        // NOTE: This is only for backward compatibility - remove in production
+        if (db == null) db = "jdbc:hsqldb:hsql://localhost/xdb";
+        if (user == null) user = "SA";
+        if (password == null) password = "";
 
         try {
             // Create database connection
