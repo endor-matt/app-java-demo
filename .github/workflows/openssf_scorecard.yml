@@ -1,0 +1,18 @@
+name: Run Scorecard
+
+on:
+  workflow_dispatch:
+
+jobs:
+  release:
+    name: Run Scorecard
+    runs-on: ubuntu-latest
+    permissions: read-all
+    steps:
+  
+      - name: Checkout code
+        uses: actions/checkout@v3
+        
+      - name: OSSF Scorecard action
+        uses: ossf/scorecard-action@v2.3.1
+       

@@ -1,0 +1,19 @@
+name: Run Semgrep
+
+on:
+  workflow_dispatch:
+
+jobs:
+  release:
+    name: Run Semgrep
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+  
+      - name: Checkout code
+        uses: actions/checkout@v3
+        
+      - name: Run SAST
+        run: python3 -m pip install semgrep && semgrep scan

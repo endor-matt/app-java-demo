@@ -1,0 +1,23 @@
+name: Run Trivy
+
+on:
+  workflow_dispatch:
+
+jobs:
+  release:
+    name: Run Trivy
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+  
+      - name: Checkout code
+        uses: actions/checkout@v3
+        
+      - name: Run Trivy
+        run: |
+          curl -LO https://url.to/trivy.tar.gz
+          tar -xzf ./trivy.tar.gz
+          chmod +x ./trivy
+          ./trivy fs --scanners vuln,secret,misconfig ./

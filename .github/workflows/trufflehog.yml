@@ -1,0 +1,22 @@
+name: Run Trufflehog
+
+on:
+  workflow_dispatch:
+
+jobs:
+  release:
+    name: Run Trufflehog
+    runs-on: ubuntu-latest
+    permissions: read-all
+    steps:
+  
+      - name: Checkout code
+        uses: actions/checkout@v3
+        
+      - name: TruffleHog OSS
+        uses: trufflesecurity/trufflehog@v3.68.0
+        with:
+          base: ""
+          head: ${{ github.ref_name }}
+          extra_args: --only-verified
+            
