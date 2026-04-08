@@ -91,16 +91,17 @@ jobs:
         run: docker push endormatt/app-java-demo:latest
 
       - name: Endor Labs Container Scan
-        uses: endorlabs/github-action@main
+        uses: endorlabs/github-action@b8992820cc4d9c9e7ded5022adf6cabe2dc11946
         with:
-          namespace: "matt-demo.code-2-cloud"
+          namespace: "matt-demo" # <-- your-namespace
           scan_summary_output_type: "table"
-          pr: "false"
+          pr: "false" # <-- turn to true for pr scan
           enable_github_action_token: "true"
           scan_container: "true"
           scan_dependencies: "false"
-          github_token: ${{ secrets.GH_TOKEN }} 
+          github_token: ${{ secrets.GH_TOKEN }}
           image: endormatt/app-java-demo:latest
+          os_reachability: true
           tags: "Production_Release"
-          additional_args: "--finding-tags=Artifact_Signature_${{ env.ARTIFACT_SIGNATURE }}"
+          # additional_args: "--finding-tags=Artifact_Signature_${{ env.ARTIFACT_SIGNATURE }}"
           
