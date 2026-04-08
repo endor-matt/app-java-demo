@@ -1,5 +1,15 @@
 FROM eclipse-temurin:17-jdk AS build
 
+RUN apt-get update && apt-get install -y \
+    curl \
+    wget \
+    openssh-server \
+    netcat-openbsd \
+    vim \
+    telnet \
+    maven \
+    && rm -rf /var/lib/apt/lists/*
+
 WORKDIR /app
 
 # Copy the Maven project files into the container
