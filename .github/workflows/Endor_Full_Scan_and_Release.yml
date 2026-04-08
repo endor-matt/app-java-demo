@@ -94,11 +94,10 @@ jobs:
           scan_summary_output_type: "table"
           pr: "false" # <-- turn to true for pr scan
           enable_github_action_token: "true"
-          scan_container: "true"
-          scan_dependencies: "false"
+          scan_container: true
+          scan_dependencies: false
           github_token: ${{ secrets.GH_TOKEN }}
           image: endormatt/app-java-demo:latest
-          os_reachability: true
           tags: "Production_Release"
           additional_args: "--finding-tags=Artifact_Signature_${{ env.ARTIFACT_SIGNATURE }}"
           
